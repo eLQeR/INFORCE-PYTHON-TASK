@@ -18,8 +18,12 @@ class AuthenticatedUserApiTests(TestCase):
         self.user = User.objects.create_user(
             username="Test-user", password="<PASSWORD>"
         )
-        self.type_bar = EstablishmentType.objects.create(name="Bar", slug="bar")
-        self.type_cafe = EstablishmentType.objects.create(name="Cafe", slug="cafe")
+        self.type_bar = EstablishmentType.objects.create(
+            name="Bar", slug="bar"
+        )
+        self.type_cafe = EstablishmentType.objects.create(
+            name="Cafe", slug="cafe"
+        )
         cuisine = Cuisine.objects.create(name="Ukrainian", slug="ukrainian")
         self.bar = Cafe.objects.create(
             name="Bar",
@@ -75,10 +79,12 @@ class AuthenticatedUserApiTests(TestCase):
         Vote.objects.create(voter=user_2, cafe=self.cafe)
         Vote.objects.create(voter=self.user, cafe=self.bar)
         select_the_winner_cafe()
-        response = self.client.get(f"/api/voting/results/get-today-cafe/")
+        response = self.client.get("/api/voting/results/get-today-cafe/")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(ResultOfVoting.objects.last().result_cafe, self.cafe)
-        self.assertTrue(ResultOfVoting.objects.filter(result_cafe=self.cafe).exists())
+        self.assertTrue(
+            ResultOfVoting.objects.filter(result_cafe=self.cafe).exists()
+        )
 
 
 class UnauthenticatedUserApiTests(TestCase):
@@ -87,7 +93,10 @@ class UnauthenticatedUserApiTests(TestCase):
         self.user = User.objects.create_user(
             username="Test-user", password="<PASSWORD>"
         )
-        self.type_cafe = EstablishmentType.objects.create(name="Cafe", slug="cafe")
+        self.type_cafe = EstablishmentType.objects.create(
+            name="Cafe",
+            slug="cafe"
+        )
         cuisine = Cuisine.objects.create(name="Ukrainian", slug="ukrainian")
         self.cafe = Cafe.objects.create(
             name="Cafe",

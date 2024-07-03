@@ -2,10 +2,9 @@ from django.contrib.auth import get_user_model
 from django.core.exceptions import ObjectDoesNotExist
 from django.test import TestCase
 from rest_framework import status
-from rest_framework.response import Response
 from rest_framework.test import APIClient
 
-from cafe.models import Cafe, CafeLunchMenu, EstablishmentType, Cuisine
+from cafe.models import Cafe, EstablishmentType, Cuisine
 from cafe.serializers import CafeListSerializer, CafeDetailSerializer
 
 
@@ -19,8 +18,12 @@ class UserApiTests(TestCase):
             username="user", password="<PASSWORD>"
         )
         self.client.force_authenticate(user=self.user)
-        self.type_bar = EstablishmentType.objects.create(name="Bar", slug="bar")
-        self.type_cafe = EstablishmentType.objects.create(name="Cafe", slug="cafe")
+        self.type_bar = EstablishmentType.objects.create(
+            name="Bar", slug="bar"
+        )
+        self.type_cafe = EstablishmentType.objects.create(
+            name="Cafe", slug="cafe"
+        )
         cuisine = Cuisine.objects.create(name="Ukrainian", slug="ukrainian")
         self.bar = Cafe.objects.create(
             name="Bar",
@@ -53,7 +56,8 @@ class UserApiTests(TestCase):
         cafes = Cafe.objects.all()
         self.assertEqual(len(response.data["results"]), cafes.count())
         self.assertEqual(
-            response.data["results"], (CafeListSerializer(cafes, many=True).data)
+            response.data["results"],
+            (CafeListSerializer(cafes, many=True).data)
         )
 
     def test_filtered_cafes(self):
@@ -61,7 +65,8 @@ class UserApiTests(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data["results"]), 1)
         self.assertEqual(
-            response.data["results"], CafeListSerializer([self.bar], many=True).data
+            response.data["results"],
+            CafeListSerializer([self.bar], many=True).data
         )
 
     def test_retrieve_cafe(self):
@@ -76,16 +81,30 @@ class UserApiTests(TestCase):
             CAFE_URL,
             self.data,
         )
-        self.assertEqual(response.status_code, status.HTTP_301_MOVED_PERMANENTLY)
-        self.assertRaises(ObjectDoesNotExist, Cafe.objects.get, name="Test Bar")
+        self.assertEqual(
+            response.status_code,
+            status.HTTP_301_MOVED_PERMANENTLY
+        )
+        self.assertRaises(
+            ObjectDoesNotExist,
+            Cafe.objects.get,
+            name="Test Bar"
+        )
 
     def test_update_cafe_forbidden(self):
         response = self.client.put(
             "/api/catalog/cafes/1/",
             self.data,
         )
-        self.assertEqual(response.status_code, status.HTTP_301_MOVED_PERMANENTLY)
-        self.assertRaises(ObjectDoesNotExist, Cafe.objects.get, name="Test Bar")
+        self.assertEqual(
+            response.status_code,
+            status.HTTP_301_MOVED_PERMANENTLY
+        )
+        self.assertRaises(
+            ObjectDoesNotExist,
+            Cafe.objects.get,
+            name="Test Bar"
+        )
 
     def test_delete_cafe_forbidden(self):
         response = self.client.delete(
@@ -99,54 +118,3 @@ class UserApiTests(TestCase):
     def test_get_invalid_airport(self):
         response = self.client.get(f"{CAFE_URL}1001/")
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
-
-
-#
-# class AdminApiTests(TestCase):
-#     def setUp(self):
-#         self.client = APIClient()
-#         user = User.objects.create_superuser(username='admin_user', password='<PASSWORD>')
-#         self.client.force_authenticate(user=user)
-#         self.data = {
-#                 "name": "Scarlett",
-#                 "closest_big_city": "New York",
-#             }
-#
-#         Airport.objects.create(name="Georginia", closest_big_city="Milan")
-#         self.airport = Airport.objects.create(name="Kean", closest_big_city="Paris")
-#
-#     def test_create_airport(self):
-#         response = self.client.post(
-#             "/api/airlines/airports/",
-#             self.data,
-#         )
-#         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-#         self.assertEqual(response.data["closest_big_city"], "New York")
-#         self.assertEqual(Airport.objects.count(), 3)
-#
-#     def test_update_airport(self):
-#         response = self.client.put(
-#             "/api/airlines/airports/1/",
-#             self.data,
-#         )
-#         self.assertEqual(response.status_code, status.HTTP_200_OK)
-#         self.assertEqual(response.data["closest_big_city"], "New York")
-#         self.assertEqual(Airport.objects.count(), 2)
-#         self.assertEqual(Airport.objects.get(pk=1).name, "Scarlett")
-#
-#
-#     def test_delete_airport(self):
-#         response = self.client.delete(
-#             "/api/airlines/airports/1/",
-#         )
-#         db_airport_id_1 = Airport.objects.filter(pk=1)
-#
-#         self.assertEqual(db_airport_id_1.count(), 0)
-#         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
-#
-#     def test_delete_invalid_airport(self):
-#         response = self.client.delete(
-#             "/api/airlines/airports/1001/",
-#         )
-#         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
-#
