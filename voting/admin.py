@@ -1,3 +1,5 @@
 from django.contrib import admin
-
-# Register your models here.
+from voting.models import Vote, ResultOfVoting
+models = [Vote, ResultOfVoting]
+for model in models:
+    admin.site.register(model)
