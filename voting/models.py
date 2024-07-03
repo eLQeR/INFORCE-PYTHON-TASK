@@ -9,6 +9,9 @@ class ResultOfVoting(models.Model):
     result_cafe = models.ForeignKey(to=Cafe, on_delete=models.CASCADE, related_name='results_voting')
     quantity_of_votes = models.IntegerField(default=0)
 
+    class Meta:
+        ordering = ('-voting_date',)
+
 
 class Vote(models.Model):
     cafe = models.ForeignKey(to=Cafe, on_delete=models.CASCADE, related_name='votes')
@@ -17,3 +20,4 @@ class Vote(models.Model):
 
     class Meta:
         unique_together = (('created_at', 'voter'),)
+        ordering = ('-created_at',)
