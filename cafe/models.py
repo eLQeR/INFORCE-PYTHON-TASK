@@ -61,6 +61,9 @@ class CafeLunchMenu(models.Model):
     def __str__(self):
         return f"{self.cafe.name}, {self.weekday}"
 
+    class Meta:
+        unique_together = (('weekday', 'cafe'),)
+
 
 class LunchDish(models.Model):
     name = models.CharField(max_length=155)
