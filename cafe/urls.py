@@ -6,7 +6,6 @@ from cafe.views import (
     CafeLunchMenuViewSet,
 )
 
-
 router = DefaultRouter()
 
 router.register('cafes', CafeViewSet)
@@ -16,4 +15,4 @@ urlpatterns = [
     path("", include(router.urls)),
 ]
 
-app_name = "cafe"
+app_name = "catalog"
