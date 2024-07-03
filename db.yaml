@@ -1,0 +1,388 @@
+- model: django_celery_beat.intervalschedule
+  pk: 1
+  fields:
+    every: 30
+    period: seconds
+- model: django_celery_beat.crontabschedule
+  pk: 2
+  fields:
+    minute: '0'
+    hour: '11'
+    day_of_month: '*'
+    month_of_year: '*'
+    day_of_week: '*'
+    timezone: Europe/Kiev
+- model: django_celery_beat.periodictasks
+  pk: 1
+  fields:
+    last_update: 2024-07-03 09:56:21.876163+00:00
+- model: django_celery_beat.periodictask
+  pk: 1
+  fields:
+    name: Choose Winner Cafe
+    task: voting.tasks.select_the_winner_cafe
+    interval: null
+    crontab: 2
+    solar: null
+    clocked: null
+    args: '[]'
+    kwargs: '{}'
+    queue: null
+    exchange: null
+    routing_key: null
+    headers: '{}'
+    priority: null
+    expires: null
+    expire_seconds: null
+    one_off: false
+    start_time: null
+    enabled: true
+    last_run_at: 2024-07-03 09:52:38.866773+00:00
+    total_run_count: 14
+    date_changed: 2024-07-03 09:56:21.875161+00:00
+    description: Every day at 11 oclock, systen counts votes  and chooses the cafe
+      for lunch time
+- model: cafe.cuisine
+  pk: 1
+  fields:
+    name: Italian
+    slug: italian
+- model: cafe.cuisine
+  pk: 2
+  fields:
+    name: Greek
+    slug: greek
+- model: cafe.establishmenttype
+  pk: 1
+  fields:
+    name: Bar
+    slug: bar
+- model: cafe.establishmenttype
+  pk: 2
+  fields:
+    name: Restaurant
+    slug: restaurant
+- model: cafe.cafe
+  pk: 1
+  fields:
+    name: VINO e CUCINA
+    address: Sichovykh Striltsiv, 82
+    cafe_url: vinoecucina.choiceqr.com
+    slug: vino-cafe
+    type: 2
+    cuisine: 1
+    main_photo: uploads/Cafe/VINO_e_CUCINA-2021-03-09jpg-24b14a11-874f-49f3-8452-c2554cc1ebe5.jpg
+    description: A spacious Italian restaurant with a wine bar and cheese factory,
+      as well as a patio.
+- model: cafe.cafe
+  pk: 2
+  fields:
+    name: Mayak
+    address: Dniprovska embankment, 2
+    cafe_url: mayak.rest
+    slug: mayak-cafe
+    type: 2
+    cuisine: 2
+    main_photo: uploads/Cafe/DB_Task_Manager_Production-15754563565de78e64263a7_5de78e5254b02975796994j_sq5YW29.jpeg
+    description: An upscale, stylish restaurant with a view of the river, serving
+      seafood and international cuisine.
+- model: cafe.cafelunchmenu
+  pk: 1
+  fields:
+    cafe: 1
+    weekday: MON
+- model: cafe.cafelunchmenu
+  pk: 2
+  fields:
+    cafe: 1
+    weekday: TUE
+- model: cafe.cafelunchmenu
+  pk: 3
+  fields:
+    cafe: 2
+    weekday: MON
+- model: cafe.cafelunchmenu
+  pk: 4
+  fields:
+    cafe: 2
+    weekday: TUE
+- model: cafe.cafelunchmenu
+  pk: 5
+  fields:
+    cafe: 2
+    weekday: WED
+- model: cafe.cafelunchmenu
+  pk: 6
+  fields:
+    cafe: 2
+    weekday: THU
+- model: cafe.cafelunchmenu
+  pk: 7
+  fields:
+    cafe: 2
+    weekday: FRI
+- model: cafe.cafelunchmenu
+  pk: 8
+  fields:
+    cafe: 2
+    weekday: SAT
+- model: cafe.cafelunchmenu
+  pk: 9
+  fields:
+    cafe: 2
+    weekday: SUN
+- model: cafe.cafelunchmenu
+  pk: 10
+  fields:
+    cafe: 1
+    weekday: WED
+- model: cafe.cafelunchmenu
+  pk: 11
+  fields:
+    cafe: 1
+    weekday: THU
+- model: cafe.cafelunchmenu
+  pk: 12
+  fields:
+    cafe: 1
+    weekday: FRI
+- model: cafe.cafelunchmenu
+  pk: 13
+  fields:
+    cafe: 1
+    weekday: SAT
+- model: cafe.cafelunchmenu
+  pk: 14
+  fields:
+    cafe: 1
+    weekday: SUN
+- model: cafe.lunchdish
+  pk: 1
+  fields:
+    name: Omlet
+    cost: 120
+    image: uploads/LunchDish/Omlet-15416817675be4326778cfd_5be431f0deebb173950207jpeg-ef2a5ca9-8f7_aRGInXC.jpeg
+    menu: 1
+- model: cafe.lunchdish
+  pk: 2
+  fields:
+    name: Pankeyk
+    cost: 170
+    image: uploads/LunchDish/Pankeyk-15754563555de78e6390ab9_5de78e5228793683565139jpeg-91413505-7_rWiDZAs.jpeg
+    menu: 1
+- model: cafe.lunchdish
+  pk: 3
+  fields:
+    name: Cocteil
+    cost: 130
+    image: uploads/LunchDish/Cocteil-15754563555de78e63ee8b5_5de78e524fd30245254439jpeg-1ce34c17-f_QafV0mV.jpeg
+    menu: 1
+- model: cafe.lunchdish
+  pk: 4
+  fields:
+    name: Omlet
+    cost: 220
+    image: uploads/LunchDish/Omlet-15754563565de78e64263a7_5de78e5254b02975796994jpeg-d8c89c16-c79_nIMxG20.jpeg
+    menu: 2
+- model: cafe.lunchdish
+  pk: 5
+  fields:
+    name: Krucheniki
+    cost: 110
+    image: uploads/LunchDish/Krucheniki-15416817675be432677235f_5be431e72e2d0066361323jpeg-50f0cf1_Skw85Me.jpeg
+    menu: 2
+- model: cafe.lunchdish
+  pk: 6
+  fields:
+    name: Omlet
+    cost: 10
+    image: uploads/LunchDish/default.jpg
+    menu: 3
+- model: cafe.lunchdish
+  pk: 7
+  fields:
+    name: Omlet
+    cost: 3
+    image: uploads/LunchDish/default.jpg
+    menu: 4
+- model: cafe.lunchdish
+  pk: 8
+  fields:
+    name: Pankeyk
+    cost: 3
+    image: uploads/LunchDish/default.jpg
+    menu: 4
+- model: cafe.lunchdish
+  pk: 9
+  fields:
+    name: Pelmeni
+    cost: 160
+    image: uploads/LunchDish/Pelmeni-15416817675be432677235f_5be431e72e2d0066361323jpeg-f023a506-a_S0HQ0s6.jpeg
+    menu: 5
+- model: cafe.lunchdish
+  pk: 10
+  fields:
+    name: Сheesecakes
+    cost: 100
+    image: uploads/LunchDish/Сheesecakes-mini-strawberry-cheesecakesjpg-5f8ea438-2871-487d-b1ce-074_YxuWCRd.jpg
+    menu: 6
+- model: cafe.lunchdish
+  pk: 11
+  fields:
+    name: Fried eggs and bacon
+    cost: 160
+    image: uploads/LunchDish/Fried_eggs_and_bacon-sunny-side-up-eggs-with-baconwebp-8b344c2e-4f32-_U9EqCtw.webp
+    menu: 6
+- model: cafe.lunchdish
+  pk: 12
+  fields:
+    name: Сheesecakes
+    cost: 100
+    image: uploads/LunchDish/Сheesecakes-mini-strawberry-cheesecakesjpg-6db27dcc-fa5a-4ed6-94d1-75a_19eEruE.jpg
+    menu: 7
+- model: cafe.lunchdish
+  pk: 13
+  fields:
+    name: Fried eggs and bacon
+    cost: 170
+    image: uploads/LunchDish/Fried_eggs_and_bacon-sunny-side-up-eggs-with-baconwebp-79e4248e-b34a-_OzZmBhy.webp
+    menu: 7
+- model: cafe.lunchdish
+  pk: 14
+  fields:
+    name: Cocteil
+    cost: 200
+    image: uploads/LunchDish/Cocteil-15754563555de78e63ee8b5_5de78e524fd30245254439jpeg-dcf90f73-f_1GmgkDH.jpeg
+    menu: 7
+- model: cafe.lunchdish
+  pk: 15
+  fields:
+    name: Vareniki
+    cost: 120
+    image: uploads/LunchDish/default.jpg
+    menu: 8
+- model: cafe.lunchdish
+  pk: 16
+  fields:
+    name: Fried eggs and bacon
+    cost: 80
+    image: uploads/LunchDish/default.jpg
+    menu: 8
+- model: cafe.lunchdish
+  pk: 17
+  fields:
+    name: Сheesecakes
+    cost: 100
+    image: uploads/LunchDish/Сheesecakes-mini-strawberry-cheesecakesjpg-0785bf60-4f4a-4f6a-b5b0-287_KglwU4Q.jpg
+    menu: 9
+- model: cafe.lunchdish
+  pk: 18
+  fields:
+    name: Fried eggs and bacon
+    cost: 200
+    image: uploads/LunchDish/Fried_eggs_and_bacon-sunny-side-up-eggs-with-baconwebp-c3704e3f-babf-_x0R6kI5.webp
+    menu: 9
+- model: cafe.lunchdish
+  pk: 19
+  fields:
+    name: Pelmeni
+    cost: 200
+    image: uploads/LunchDish/Pelmeni-pelmenijpg-c384a4e3-9bbb-46b3-82d9-6d8cdb4d1e53.jpg
+    menu: 10
+- model: cafe.lunchdish
+  pk: 20
+  fields:
+    name: Fried eggs and bacon
+    cost: 300
+    image: uploads/LunchDish/Fried_eggs_and_bacon-sunny-side-up-eggs-with-baconwebp-63218baf-fde9-_RZuREv5.webp
+    menu: 10
+- model: cafe.lunchdish
+  pk: 21
+  fields:
+    name: Cocteil
+    cost: 150
+    image: uploads/LunchDish/Cocteil-15754563555de78e63ee8b5_5de78e524fd30245254439jpeg-32359954-b_Dpucej1.jpeg
+    menu: 10
+- model: cafe.lunchdish
+  pk: 22
+  fields:
+    name: Сheesecakes
+    cost: 100
+    image: uploads/LunchDish/Сheesecakes-imagesjpg-b639d0a7-ce16-4b19-9325-0f07e3fe1d3f.jpg
+    menu: 11
+- model: cafe.lunchdish
+  pk: 23
+  fields:
+    name: Fried eggs and bacon
+    cost: 100
+    image: uploads/LunchDish/Fried_eggs_and_bacon-sunny-side-up-eggs-with-baconwebp-779d631c-e609-_RmMMuCx.webp
+    menu: 11
+- model: cafe.lunchdish
+  pk: 24
+  fields:
+    name: Сheesecakes
+    cost: 120
+    image: uploads/LunchDish/Сheesecakes-imagesjpg-85fd9f7f-4bc6-4a2c-ac2a-3b133b17f502.jpg
+    menu: 12
+- model: cafe.lunchdish
+  pk: 25
+  fields:
+    name: Fried eggs and bacon
+    cost: 120
+    image: uploads/LunchDish/Fried_eggs_and_bacon-sunny-side-up-eggs-with-baconwebp-39df5d1f-2c2d-_L4DwPMe.webp
+    menu: 12
+- model: cafe.lunchdish
+  pk: 26
+  fields:
+    name: Сheesecakes
+    cost: 120
+    image: uploads/LunchDish/Сheesecakes-imagesjpg-b58a2109-b0bd-428b-9dfb-68bb8d2d1277.jpg
+    menu: 13
+- model: cafe.lunchdish
+  pk: 27
+  fields:
+    name: Cocteil
+    cost: 140
+    image: uploads/LunchDish/Cocteil-15754563555de78e63ee8b5_5de78e524fd30245254439jpeg-987683b0-6_Yx8vHKF.jpeg
+    menu: 13
+- model: cafe.lunchdish
+  pk: 28
+  fields:
+    name: Pelmeni
+    cost: 110
+    image: uploads/LunchDish/Pelmeni-pelmenijpg-ca875197-c958-45ca-9931-b3979b3c4e41.jpg
+    menu: 14
+- model: cafe.lunchdish
+  pk: 29
+  fields:
+    name: Cocteil
+    cost: 150
+    image: uploads/LunchDish/Cocteil-15754563555de78e63ee8b5_5de78e524fd30245254439jpeg-28c72617-0_5eRwYcK.jpeg
+    menu: 14
+- model: user.user
+  pk: 1
+  fields:
+    password: pbkdf2_sha256$720000$fTvSlxDtYWOEJqr2iZLXde$FMs70FDM+ByI7ajtXqC2/AbP0EGDQx92XbSI2n/7+qs=
+    last_login: 2024-07-03 12:13:04.174461+00:00
+    is_superuser: true
+    username: test_admin
+    first_name: ''
+    last_name: ''
+    email: admin@gmail.com
+    is_staff: true
+    is_active: true
+    date_joined: 2024-07-02 19:20:38.367030+00:00
+    groups: []
+    user_permissions: []
+- model: voting.resultofvoting
+  pk: 13
+  fields:
+    voting_date: 2024-07-03
+    result_cafe: 1
+    quantity_of_votes: 1
+- model: voting.vote
+  pk: 6
+  fields:
+    cafe: 1
+    created_at: 2024-07-03
+    voter: 1
