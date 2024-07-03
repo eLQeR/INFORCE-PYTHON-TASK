@@ -20,13 +20,6 @@ class ProductAdmin(admin.ModelAdmin):
     search_fields = ("cafe__name", "cafe__id")
 
 
-class LunchMenuInline(admin.TabularInline):
-    fk_name = "cafe"
-    model = CafeLunchMenu
-    extra = 7
-
-
 @admin.register(Cafe)
 class ProductAdmin(admin.ModelAdmin):
     exclude = ["article"]
-    inlines = [LunchMenuInline]
