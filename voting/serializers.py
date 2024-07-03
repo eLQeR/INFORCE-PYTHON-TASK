@@ -5,6 +5,18 @@ from cafe.serializers import CafeListSerializer, CafeDetailSerializer
 
 
 class VoteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Vote
+        fields = (
+            "id",
+            "cafe",
+            "voter",
+            "created_at",
+        )
+
+
+class VoteListSerializer(serializers.ModelSerializer):
+    cafe = CafeListSerializer(many=False, read_only=True)
 
     class Meta:
         model = Vote
@@ -12,7 +24,6 @@ class VoteSerializer(serializers.ModelSerializer):
             "id",
             "cafe",
             "created_at",
-            "voter",
         )
 
 
