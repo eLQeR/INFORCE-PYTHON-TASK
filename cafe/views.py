@@ -90,6 +90,12 @@ class CafeViewSet(viewsets.ModelViewSet):
             except FieldError:
                 raise ValidationError(code=400, detail="Invalid ordering")
 
+        if self.action == "list":
+            queryset = queryset.select_related("cuisine", "type")
+
+        if self.action == "retrieve":
+            queryset = queryset.prefetch_related("menu_lunches__dishes")
+
         return queryset.distinct()
 
     @extend_schema(
@@ -126,8 +132,8 @@ class CafeViewSet(viewsets.ModelViewSet):
             OpenApiExample(
                 "Example 1",
                 value={
-                    "types": "1,2,7",
-                    "cuisines": "1,6,8",
+                    "type_ids": "1,2,7",
+                    "cuisine_ids": "1,6,8",
                 },
             ),
             OpenApiExample(
@@ -183,6 +189,9 @@ class CafeLunchMenuViewSet(viewsets.ModelViewSet):
 
         if cafe_name:
             queryset = queryset.filter(cafe__name__icontains=cafe_name)
+
+        if self.action in ("list", "retrieve"):
+            queryset = queryset.select_related().prefetch_related("dishes")
 
         return queryset
 
