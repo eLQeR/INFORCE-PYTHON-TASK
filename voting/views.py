@@ -1,28 +1,47 @@
 from datetime import datetime
 
+from drf_spectacular.utils import extend_schema, extend_schema_view, OpenApiParameter, OpenApiExample
 from rest_framework import viewsets, mixins
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import action
-from rest_framework.exceptions import ValidationError
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
-
-from cafe.models import Cafe, CafeLunchMenu
+from cafe.models import CafeLunchMenu
 from cafe.permissions import IsAdminOrReadOnly
 
 from voting.models import Vote, ResultOfVoting
 from voting.permissions import IsCreatorOrReadOnly
-from voting.serializers import VoteSerializer
-from voting.tasks import select_the_winner_cafe
+from voting.serializers import VoteSerializer, ResultOfVotingDetailSerializer, ResultOfVotingListSerializer, \
+    VoteListSerializer
 from cafe.serializers import (
     CafeDetailSerializer,
-    CafeLunchMenuListSerializer,
     CafeLunchMenuDetailSerializer,
-    LunchDishSerializer,
 )
 
 
+@extend_schema_view(
+    retrieve=extend_schema(
+        summary="Retrieve a certain cafe",
+        description="User can get a detail info about cafe.",
+    ),
+    create=extend_schema(
+        summary="Create a cafe",
+        description="Admin can create a cafe.",
+    ),
+    update=extend_schema(
+        summary="Update a certain cafe",
+        description="Admin can update a cafe.",
+    ),
+    partial_update=extend_schema(
+        summary="Partial update a certain cafe",
+        description="Admin can make partial update a cafe.",
+    ),
+    destroy=extend_schema(
+        summary="Delete a certain cafe",
+        description="Admin can delete a cafe.",
+    ),
+)
 class VoteViewSet(viewsets.ModelViewSet):
     queryset = Vote.objects.all()
     serializer_class = VoteSerializer
@@ -32,7 +51,34 @@ class VoteViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return self.queryset.filter(voter=self.request.user)
 
+    def get_serializer_class(self):
+        if self.action == 'create':
+            return VoteSerializer
+        return VoteListSerializer
 
+
+@extend_schema_view(
+    retrieve=extend_schema(
+        summary="Retrieve a certain cafe",
+        description="User can get a detail info about cafe.",
+    ),
+    create=extend_schema(
+        summary="Create a cafe",
+        description="Admin can create a cafe.",
+    ),
+    update=extend_schema(
+        summary="Update a certain cafe",
+        description="Admin can update a cafe.",
+    ),
+    partial_update=extend_schema(
+        summary="Partial update a certain cafe",
+        description="Admin can make partial update a cafe.",
+    ),
+    destroy=extend_schema(
+        summary="Delete a certain cafe",
+        description="Admin can delete a cafe.",
+    ),
+)
 class ResultOfVotingView(
     mixins.RetrieveModelMixin,
     mixins.UpdateModelMixin,
@@ -43,9 +89,14 @@ class ResultOfVotingView(
     permission_classes = [IsAdminOrReadOnly]
     pagination_class = PageNumberPagination
 
+    @extend_schema(
+        summary="Get today's menu of cafe",
+        description="Employee can get today's menu of cafe if voting is ended.",
+        methods=["GET"],
+    )
+    @action(detail=False, methods=['GET'], url_path="get-today-cafe")
     def get_today_cafe(self, request):
-        today = datetime.today().strftime("%a")
-        # select_the_winner_cafe()
+        today = datetime.today().strftime("%a").upper()
         result = self.get_queryset()
         if result:
             cafe = result.first().result_cafe
@@ -56,16 +107,16 @@ class ResultOfVotingView(
                 return Response(CafeDetailSerializer(cafe).data, status=200)
 
             serializer = self.get_serializer(menu, many=False)
-            return Response(serializer.data, status=200)
-        return Response({"result": "It hasn't decided yet"}, status=200)
+            return Response(serializer.data)
+        return Response({"result": "It has not decided yet"}, status=200)
 
     def get_serializer_class(self):
-        if self.action == 'list':
-            return CafeLunchMenuListSerializer
         if self.action == 'retrieve':
+            return ResultOfVotingDetailSerializer
+        if self.action == 'get_today_cafe':
             return CafeLunchMenuDetailSerializer
-        return CafeLunchMenuListSerializer
 
+        return ResultOfVotingListSerializer
 
     def get_queryset(self):
         queryset = self.queryset
@@ -73,7 +124,7 @@ class ResultOfVotingView(
         cafe = self.request.query_params.get("cafe", None)
 
         if cafe:
-            queryset = queryset.filter(cafe__slug=cafe)
+            queryset = queryset.filter(result_cafe__slug=cafe)
 
         if self.action == "get_today_cafe":
             queryset = self.queryset.filter(voting_date=today)
