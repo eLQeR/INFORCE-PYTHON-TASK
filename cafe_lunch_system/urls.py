@@ -14,17 +14,22 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
-from drf_spectacular.views import SpectacularSwaggerView, SpectacularAPIView, SpectacularRedocView
+from drf_spectacular.views import (
+    SpectacularSwaggerView,
+    SpectacularAPIView,
+    SpectacularRedocView,
+)
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api/catalog/', include("cafe.urls", namespace="cafe")),
-    path('api/user/', include("user.urls", namespace="user")),
-    path('api/voting/', include("voting.urls", namespace="voting")),
+    path("admin/", admin.site.urls),
+    path("api/catalog/", include("cafe.urls", namespace="cafe")),
+    path("api/user/", include("user.urls", namespace="user")),
+    path("api/voting/", include("voting.urls", namespace="voting")),
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
     path(
         "api/doc/swagger/",
@@ -32,11 +37,9 @@ urlpatterns = [
         name="swagger-ui",
     ),
     path(
-        "api/doc/redoc/",
-        SpectacularRedocView.as_view(url_name="schema"),
-        name="redoc"
+        "api/doc/redoc/", SpectacularRedocView.as_view(url_name="schema"), name="redoc"
     ),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
-app_name = 'cafe_lunch_system'
+app_name = "cafe_lunch_system"

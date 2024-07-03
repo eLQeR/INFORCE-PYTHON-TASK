@@ -8,8 +8,8 @@ from cafe.views import (
 
 router = DefaultRouter()
 
-router.register('cafes', CafeViewSet)
-router.register('lunches', CafeLunchMenuViewSet)
+router.register("cafes", CafeViewSet)
+router.register("lunches", CafeLunchMenuViewSet)
 
 urlpatterns = [
     path("", include(router.urls)),

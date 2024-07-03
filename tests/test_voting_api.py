@@ -16,27 +16,26 @@ class AuthenticatedUserApiTests(TestCase):
     def setUp(self):
         self.client = APIClient()
         self.user = User.objects.create_user(
-            username='Test-user',
-            password='<PASSWORD>'
+            username="Test-user", password="<PASSWORD>"
         )
-        self.type_bar = EstablishmentType.objects.create(name='Bar', slug='bar')
-        self.type_cafe = EstablishmentType.objects.create(name='Cafe', slug='cafe')
-        cuisine = Cuisine.objects.create(name='Ukrainian', slug='ukrainian')
+        self.type_bar = EstablishmentType.objects.create(name="Bar", slug="bar")
+        self.type_cafe = EstablishmentType.objects.create(name="Cafe", slug="cafe")
+        cuisine = Cuisine.objects.create(name="Ukrainian", slug="ukrainian")
         self.bar = Cafe.objects.create(
-            name='Bar',
-            description='Bar description',
-            address='Bar address',
-            slug='bar-slug-1',
+            name="Bar",
+            description="Bar description",
+            address="Bar address",
+            slug="bar-slug-1",
             cuisine=cuisine,
-            type=self.type_bar
+            type=self.type_bar,
         )
         self.cafe = Cafe.objects.create(
-            name='Cafe',
-            description='cafe description',
-            address='cafe address',
-            slug='cafe-slug-2',
+            name="Cafe",
+            description="cafe description",
+            address="cafe address",
+            slug="cafe-slug-2",
             cuisine=cuisine,
-            type=self.type_cafe
+            type=self.type_cafe,
         )
         self.data = {
             "cafe": self.cafe.pk,
@@ -59,19 +58,18 @@ class AuthenticatedUserApiTests(TestCase):
             response.data["non_field_errors"],
             [
                 ErrorDetail(
-                    'The fields created_at, voter must make a unique set.', code="unique"
+                    "The fields created_at, voter must make a unique set.",
+                    code="unique",
                 )
-            ]
+            ],
         )
 
     def test_result_of_voting(self):
         user_1 = User.objects.create_superuser(
-            username='Test-user-1',
-            password='<PASSWORD>'
+            username="Test-user-1", password="<PASSWORD>"
         )
         user_2 = User.objects.create_superuser(
-            username='Test-user-2',
-            password='<PASSWORD>'
+            username="Test-user-2", password="<PASSWORD>"
         )
         Vote.objects.create(voter=user_1, cafe=self.cafe)
         Vote.objects.create(voter=user_2, cafe=self.cafe)
@@ -87,18 +85,17 @@ class UnauthenticatedUserApiTests(TestCase):
     def setUp(self):
         self.client = APIClient()
         self.user = User.objects.create_user(
-            username='Test-user',
-            password='<PASSWORD>'
+            username="Test-user", password="<PASSWORD>"
         )
-        self.type_cafe = EstablishmentType.objects.create(name='Cafe', slug='cafe')
-        cuisine = Cuisine.objects.create(name='Ukrainian', slug='ukrainian')
+        self.type_cafe = EstablishmentType.objects.create(name="Cafe", slug="cafe")
+        cuisine = Cuisine.objects.create(name="Ukrainian", slug="ukrainian")
         self.cafe = Cafe.objects.create(
-            name='Cafe',
-            description='cafe description',
-            address='cafe address',
-            slug='cafe-slug-2',
+            name="Cafe",
+            description="cafe description",
+            address="cafe address",
+            slug="cafe-slug-2",
             cuisine=cuisine,
-            type=self.type_cafe
+            type=self.type_cafe,
         )
         self.vote = Vote.objects.create(voter=self.user, cafe=self.cafe)
         self.data = {

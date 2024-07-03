@@ -5,14 +5,14 @@ from voting.views import (
     VoteViewSet,
     ResultOfVotingView,
 )
+
 router = DefaultRouter()
 
-router.register('results', ResultOfVotingView)
-router.register('votes', VoteViewSet)
+router.register("results", ResultOfVotingView)
+router.register("votes", VoteViewSet)
 
 urlpatterns = [
     path("", include(router.urls)),
-    ]
+]
 
 app_name = "voting"
-

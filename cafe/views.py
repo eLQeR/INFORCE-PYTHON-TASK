@@ -1,7 +1,12 @@
 from datetime import datetime
 
 from django.core.exceptions import FieldError
-from drf_spectacular.utils import extend_schema, extend_schema_view, OpenApiParameter, OpenApiExample
+from drf_spectacular.utils import (
+    extend_schema,
+    extend_schema_view,
+    OpenApiParameter,
+    OpenApiExample,
+)
 from rest_framework import viewsets
 from rest_framework.exceptions import ValidationError
 from rest_framework.pagination import PageNumberPagination
@@ -47,9 +52,9 @@ class CafeViewSet(viewsets.ModelViewSet):
     pagination_class = PageNumberPagination
 
     def get_serializer_class(self):
-        if self.action == 'list':
+        if self.action == "list":
             return CafeListSerializer
-        if self.action == 'retrieve':
+        if self.action == "retrieve":
             return CafeDetailSerializer
         return CafeSerializer
 
@@ -65,8 +70,8 @@ class CafeViewSet(viewsets.ModelViewSet):
         queryset = self.queryset
         name = self.request.query_params.get("name", None)
         address = self.request.query_params.get("address", None)
-        type_ids = self.request.query_params.get("types", None)
-        cuisine_ids = self.request.query_params.get("cuisines", None)
+        type_ids = self.request.query_params.get("type_ids", None)
+        cuisine_ids = self.request.query_params.get("cuisine_ids", None)
         ordering = self.request.query_params.get("ordering", None)
 
         if name:
@@ -94,13 +99,13 @@ class CafeViewSet(viewsets.ModelViewSet):
         parameters=[
             OpenApiParameter(
                 name="type_ids",
-                description="Filter by cafe type ids (ex. ?types=2,3)",
+                description="Filter by cafe type ids (ex. ?type_ids=2,3)",
                 required=False,
                 type={"type": "array", "items": {"type": "integer"}},
             ),
             OpenApiParameter(
                 name="cuisine_ids",
-                description="Filter by cafe cuisines ids (ex. ?cuisines=1,3,6)",
+                description="Filter by cafe cuisines ids (ex. ?cuisine_ids=1,3,6)",
                 required=False,
                 type={"type": "array", "items": {"type": "integer"}},
             ),
@@ -108,7 +113,10 @@ class CafeViewSet(viewsets.ModelViewSet):
                 name="name", description="Filter by name", required=False, type=str
             ),
             OpenApiParameter(
-                name="address", description="Filter by address", required=False, type=str
+                name="address",
+                description="Filter by address",
+                required=False,
+                type=str,
             ),
             OpenApiParameter(
                 name="ordering", description="Ordering cafes", required=False, type=str
@@ -128,7 +136,7 @@ class CafeViewSet(viewsets.ModelViewSet):
                     "name": "Fenix",
                     "address": "Джона Маккейна",
                 },
-            )
+            ),
         ],
     )
     def list(self, request, *args, **kwargs):
@@ -164,7 +172,7 @@ class CafeLunchMenuViewSet(viewsets.ModelViewSet):
     pagination_class = PageNumberPagination
 
     def get_serializer_class(self):
-        if self.action == 'retrieve':
+        if self.action == "retrieve":
             return CafeLunchMenuDetailSerializer
         return CafeLunchMenuListSerializer
 

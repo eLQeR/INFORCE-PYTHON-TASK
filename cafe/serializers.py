@@ -1,4 +1,3 @@
-
 from rest_framework import serializers
 from cafe.models import Cafe, EstablishmentType, Cuisine, CafeLunchMenu, LunchDish
 
@@ -55,6 +54,7 @@ class CafeLunchMenuDetailSerializer(CafeLunchMenuListSerializer):
 
 class CafeLunchesDetailSerializer(serializers.ModelSerializer):
     dishes = LunchDishDetailSerializer(many=True, read_only=True)
+
     class Meta:
         model = CafeLunchMenu
         fields = ("id", "weekday", "dishes")

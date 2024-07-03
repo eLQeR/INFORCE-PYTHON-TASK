@@ -11,29 +11,32 @@ from cafe.serializers import CafeListSerializer, CafeDetailSerializer
 
 CAFE_URL = "/api/catalog/cafes/"
 
+
 class UserApiTests(TestCase):
     def setUp(self):
         self.client = APIClient()
-        self.user = get_user_model().objects.create_user(username='user', password='<PASSWORD>')
+        self.user = get_user_model().objects.create_user(
+            username="user", password="<PASSWORD>"
+        )
         self.client.force_authenticate(user=self.user)
-        self.type_bar = EstablishmentType.objects.create(name='Bar', slug='bar')
-        self.type_cafe = EstablishmentType.objects.create(name='Cafe', slug='cafe')
-        cuisine = Cuisine.objects.create(name='Ukrainian', slug='ukrainian')
+        self.type_bar = EstablishmentType.objects.create(name="Bar", slug="bar")
+        self.type_cafe = EstablishmentType.objects.create(name="Cafe", slug="cafe")
+        cuisine = Cuisine.objects.create(name="Ukrainian", slug="ukrainian")
         self.bar = Cafe.objects.create(
-            name='Bar',
-            description='Bar description',
-            address='Bar address',
-            slug='bar-slug-1',
+            name="Bar",
+            description="Bar description",
+            address="Bar address",
+            slug="bar-slug-1",
             cuisine=cuisine,
-            type=self.type_bar
+            type=self.type_bar,
         )
         self.cafe = Cafe.objects.create(
-            name='Cafe',
-            description='cafe description',
-            address='cafe address',
-            slug='cafe-slug-2',
+            name="Cafe",
+            description="cafe description",
+            address="cafe address",
+            slug="cafe-slug-2",
             cuisine=cuisine,
-            type=self.type_cafe
+            type=self.type_cafe,
         )
         self.data = {
             "name": "Test Bar",
@@ -50,8 +53,7 @@ class UserApiTests(TestCase):
         cafes = Cafe.objects.all()
         self.assertEqual(len(response.data["results"]), cafes.count())
         self.assertEqual(
-            response.data["results"],
-            (CafeListSerializer(cafes, many=True).data)
+            response.data["results"], (CafeListSerializer(cafes, many=True).data)
         )
 
     def test_filtered_cafes(self):
@@ -59,16 +61,14 @@ class UserApiTests(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data["results"]), 1)
         self.assertEqual(
-            response.data["results"],
-            CafeListSerializer([self.bar], many=True).data
+            response.data["results"], CafeListSerializer([self.bar], many=True).data
         )
 
     def test_retrieve_cafe(self):
         response = self.client.get(f"{CAFE_URL}{self.cafe.pk}/")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(
-            response.data,
-            CafeDetailSerializer(self.cafe, many=False).data
+            response.data, CafeDetailSerializer(self.cafe, many=False).data
         )
 
     def test_create_cafe_forbidden(self):
@@ -97,8 +97,9 @@ class UserApiTests(TestCase):
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
     def test_get_invalid_airport(self):
-        response = self.client.get(F"{CAFE_URL}1001/")
+        response = self.client.get(f"{CAFE_URL}1001/")
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
 
 #
 # class AdminApiTests(TestCase):
