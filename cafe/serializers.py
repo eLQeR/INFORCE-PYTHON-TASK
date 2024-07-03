@@ -1,4 +1,4 @@
-from django.db import transaction
+
 from rest_framework import serializers
 from cafe.models import Cafe, EstablishmentType, Cuisine, CafeLunchMenu, LunchDish
 
@@ -28,21 +28,36 @@ class LunchDishListSerializer(serializers.ModelSerializer):
 
 
 class LunchDishDetailSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = LunchDish
         fields = ("id", "name", "cost", "image")
 
 
+class CafeMenuSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Cafe
+        fields = ("id", "name", "main_photo")
+
+
 class CafeLunchMenuListSerializer(serializers.ModelSerializer):
+    cafe = CafeMenuSerializer(many=False, read_only=True)
     dishes = LunchDishListSerializer(many=True, read_only=True)
 
     class Meta:
         model = CafeLunchMenu
-        fields = ("id", "cafe", "weekday", "dishes")
+        fields = ("id", "cafe", "dishes")
 
 
 class CafeLunchMenuDetailSerializer(CafeLunchMenuListSerializer):
     dishes = LunchDishDetailSerializer(many=True, read_only=True)
+
+
+class CafeLunchesDetailSerializer(serializers.ModelSerializer):
+    dishes = LunchDishDetailSerializer(many=True, read_only=True)
+    class Meta:
+        model = CafeLunchMenu
+        fields = ("id", "weekday", "dishes")
 
 
 class CafeSerializer(serializers.ModelSerializer):
@@ -74,7 +89,7 @@ class CafeListSerializer(CafeSerializer):
 
 
 class CafeDetailSerializer(CafeListSerializer):
-    menu_lunches = CafeLunchMenuDetailSerializer(many=True, read_only=True)
+    menu_lunches = CafeLunchesDetailSerializer(many=True, read_only=True)
 
     class Meta:
         model = Cafe
@@ -85,6 +100,7 @@ class CafeDetailSerializer(CafeListSerializer):
             "type",
             "slug",
             "main_photo",
+            "cafe_url",
             "description",
             "menu_lunches",
         )
