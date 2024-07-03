@@ -86,3 +86,6 @@ class LunchDish(models.Model):
     menu = models.ForeignKey(
         to=CafeLunchMenu, on_delete=models.CASCADE, related_name="dishes"
     )
+
+    def __str__(self):
+        return self.name
